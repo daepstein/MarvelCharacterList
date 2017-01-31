@@ -12,7 +12,7 @@ There are two important activities: LoginActivity and MainActivity. I will expla
 
 When the app starts, it goes to the LoginActivity. It searches for 'PreferenceManager', trying to find some valid key to use. If no key was ever used (first time), the user is prompt to add their keys. Once the "Login" button is clicked, the app moves to MainActivity and begin hitting the Marvel´s site with query. (It first checks for internet connection and validated the keys, but I assume you got it right). If you dont want to write your keys (they are quite extensive), it is possible to add it directly to the app using the "util.Constant.private(public)key" field. 
 
-The MainActivity uses *RetroFit* to create the query and parse the result. The Models are in the "Model" folder. The most important is the **"CharacterModel"**, since the other only exists to help populate it. *Important: the app retrieves a lot of information from the API, even though it doesnt show. So if you want to know the name of the comics Spiderman shows up, it is already there (in the future I will improve the app).* After retrieved some information (there is a limit of 100 characters/query), it is added to the ListView Adapter and a list of characters is built.
+The MainActivity uses *RetroFit* to create the query and parse the result. The Models are in the "Model" folder. The most important is the **"CharacterModel"**, since the other only exists to help populate it. *Important: the app retrieves a lot of information from the API, even though it doesnt show. So if you want to know the name of the comics Spiderman shows up, it is already there (in the future I will improve the app).* After retrieved some information (there is a limit of 100 characters/query), it is added to the ListView Adapter and a list of characters is built. *Once the user scrolls down to the bottom of the list, a new batch of 100 characters is requested*.
 
 The display package holds the Observer that will automatically change the character being displayed when another one is selected. The *display.ShowDetails* has the structure displayed and I use *Picasso* to load the images. Currently, the images are fetched directly from URL, but the code to download it to device is already implemented on network.DownloadImage. 
 
@@ -20,5 +20,5 @@ TO DO LIST:
 - [] Implement search
 - [] Adjust listview properties
 - [] Add information about comics, events and stories to each character
-- [] Only request a new query when listview reaches bottom (no need to fetch all character at once)
+- [x] Only request a new query when listview reaches bottom (no need to fetch all character at once)
 - [] Test routine
