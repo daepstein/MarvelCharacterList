@@ -4,6 +4,9 @@
 This app uses Marvel's API to get information about its characters, comics, series and other. 
 This project is implemented in a way you dont need to change de source code to use it. All you have to do is go to http://developer.marvel.com/ and login to receive a private key and a public key, used to get the information. Once there is a limit for the number of searches/day I cannot leave my keys public. 
 
+**Attention**
+This branch contains the original project and will not be updated. To download the most recent version (which includes comments, *Expandable Lists* with the name of each comic, event, serie and story for each character and other improvements), see branch *fixs*.
+
 **Usage:**
 Once the app opens, there are two fields to add each key. The keys are stored in app, so there is no need to add it every time the app opens. 
 
