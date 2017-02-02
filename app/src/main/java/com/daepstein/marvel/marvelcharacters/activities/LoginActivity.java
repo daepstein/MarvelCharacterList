@@ -34,6 +34,10 @@ public class LoginActivity extends AppCompatActivity {
         loginWatcher();
     }
 
+    /**
+     * Initialize buttons and check if exist a valid login
+     */
+
     private void init ()
     {
         ((ImageView)findViewById(R.id.img_login)).setImageDrawable(ResizeImage(R.drawable.login_image, this));
@@ -69,7 +73,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void setNewLogin(){
-
         Login.getInstance().setPublicKey(((EditText)findViewById(R.id.txt_public)).getText().toString());
         Login.getInstance().setPrivateKey(((EditText)findViewById(R.id.txt_private)).getText().toString());
         NetworkUtility networkUtility = new NetworkUtility(this);
@@ -108,6 +111,9 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * Only enable login button if both keys are set
+     */
     private void loginWatcher()
     {
         pubKye = ((EditText)findViewById(R.id.txt_public));

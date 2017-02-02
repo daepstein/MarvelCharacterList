@@ -5,7 +5,7 @@ package com.daepstein.marvel.marvelcharacters.util;
  */
 
 public final class Constants {
-    public static final int SPLASH_TIMEOUT_SEC = 3 * 1000; //3 sec
+    public static final int SPLASH_TIMEOUT_SEC = 2 * 1000; //2 sec
     public static final int TIME_TO_EXIT = 3 * 1000; //3 sec
     public  static  final String API_URL = "http://gateway.marvel.com";
     public  static  final String charName = "Name: ";

@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.daepstein.marvel.marvelcharacters.Interface.RetroInterface;
 import com.daepstein.marvel.marvelcharacters.R;
 import com.daepstein.marvel.marvelcharacters.display.CharacterDetails;
+import com.daepstein.marvel.marvelcharacters.display.CustomExpandableList;
 import com.daepstein.marvel.marvelcharacters.display.CustomListViewAdapter;
 import com.daepstein.marvel.marvelcharacters.display.ShowDetails;
 import com.daepstein.marvel.marvelcharacters.login.Signature;
@@ -45,8 +46,9 @@ public class MainActivity extends AppCompatActivity {
     private CharacterDetails charDetails;
     private ShowDetails show;
     boolean doubleBackToExitPressedOnce = false;
-    private int limit = 90;
+    private int limit = 100;
     private int offset = 0;
+    CustomExpandableList customExpandableList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +78,10 @@ public class MainActivity extends AppCompatActivity {
         }, Constants.TIME_TO_EXIT);
     }
 
-
+    /**
+     * Used to check if the user is at the end of our list view
+     * @return
+     */
     private OnScrollListener onScrollListener() {
         return new OnScrollListener() {
 
@@ -100,6 +105,9 @@ public class MainActivity extends AppCompatActivity {
         };
     }
 
+    /**
+     * Initialize list view and out character list
+     */
     private void init()
     {
         characterList = new ArrayList<>();
@@ -108,17 +116,20 @@ public class MainActivity extends AppCompatActivity {
         charDetails = new CharacterDetails();
         show = new ShowDetails(this);
         charDetails.addObserver(show);
+        customExpandableList = new CustomExpandableList(this);
     }
 
-
+    /**
+     * Calls Retrofit to retrieve information from Marvel's API
+     */
     private void getAllCharacters(){
+
         RetroInterface restInt = RetroFitFunction.getRetroInterface();
         Signature.getInstance().generateSignature();
         final Call<ServiceResponse<CharacterModel>> call = restInt.listCharactersFull(limit, offset,Signature.getInstance().getTimestamp(),
                 Signature.getInstance().getPublicKey(), Signature.getInstance().getHash());
 
-        log(call.toString());
-
+        //Work the response from Marvel's API
         call.enqueue(new Callback<ServiceResponse<CharacterModel>>() {
             @Override
             public void onResponse(Call<ServiceResponse<CharacterModel>> call, Response<ServiceResponse<CharacterModel>>response) {
@@ -142,6 +153,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else
                 {
+                    //Received some bad response code and the keys probably dont work
                     backToLogin();
                 }
             }
@@ -150,12 +162,15 @@ public class MainActivity extends AppCompatActivity {
             public void onFailure(Call<ServiceResponse<CharacterModel>> call, Throwable t) {
                 // Log error here since request failed
                 logError(t.toString());
-                log(call.toString());
                 tryAgain();
             }
         });
     }
 
+    /**
+     * Our List view, with its custom configuration
+     * @param charNames List with the name of all Marvel's character
+     */
     private void initCharacterList(List<String> charNames){
         listView = (ListView) findViewById(R.id.listViewCharacters);
 
@@ -188,16 +203,20 @@ public class MainActivity extends AppCompatActivity {
         getAllCharacters();
     }
 
+    /**
+     * Change the selected character when the user tap over a new one
+     * @param position The Character position on the listview
+     */
     private void showFullCard(int position)
     {
         charDetails.setCm(fullListChar.get(position));
+        customExpandableList.setExpandableListDetail(show.getExpandableListDetail());
     }
 
     private void log(String s)
     {
         Log.d("MainActivityLog", s);
     }
-
 
     private void logError(String s)
     {
